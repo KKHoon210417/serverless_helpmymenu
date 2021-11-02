@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 60
 
 Resources:
   HelloWorldFunction:
@@ -25,6 +25,84 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+  ServerlessSignUpFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: serverless_sign_up/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          BUCKET_ENDPOINT: https://mylocalenv-buket.s3.ap-northeast-2.amazonaws.com
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /sign_up/save
+            Method: post
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-09addd85dea46f964
+        SubnetIds:
+          - subnet-3a718275
+      Policies:
+        - Statement:
+            - Sid: AWSSecretsManagerGetSecretValuePolicy
+              Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: arn:aws:secretsmanager:ap-northeast-2:028590157815:secret:pymongo-secret-01-E6RBX8
+  ServerlessSignInFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: serverless_sign_in/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          JWT_SECRET_KEY: "JWThelpmymenu"
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /sign_in
+            Method: post
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-09addd85dea46f964
+        SubnetIds:
+          - subnet-3a718275
+      Policies:
+        - Statement:
+            - Sid: AWSSecretsManagerGetSecretValuePolicy
+              Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: arn:aws:secretsmanager:ap-northeast-2:028590157815:secret:pymongo-secret-01-E6RBX8
+  Serverlessingredientlisting:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: serverless_ingredient_listing/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          JWT_SECRET_KEY: "JWThelpmymenu"
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /ingredient-and-recipe
+            Method: get
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-09addd85dea46f964
+        SubnetIds:
+          - subnet-3a718275
+      Policies:
+        - Statement:
+            - Sid: AWSSecretsManagerGetSecretValuePolicy
+              Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: arn:aws:secretsmanager:ap-northeast-2:028590157815:secret:pymongo-secret-01-E6RBX8
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

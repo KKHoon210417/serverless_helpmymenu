@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "serverless-helpmymenu"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1ofnvc3h8o7m6"
+s3_prefix = "serverless-helpmymenu"
+region = "ap-northeast-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
